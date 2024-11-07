@@ -1,0 +1,42 @@
+{
+    "endianness": "little",
+    "fields": [
+        {
+            "fields": [
+                {
+                    "name": "MessageType",
+                    "size": 1,
+                    "type": "unsigned_int"
+                },
+                {
+                    "name": "Level",
+                    "size": 3,
+                    "type": "unsigned_int"
+                },
+                {
+                    "name": "ObjectType",
+                    "size": 4,
+                    "type": "unsigned_int"
+                }
+            ],
+            "name": "AlertDetails",
+            "size": 8,
+            "type": "bit_field"
+        },
+        {
+            "name": "ObjectDistance",
+            "size": 32,
+            "type": "float_fixed"
+        },
+        {
+            "name": "CarSpeed",
+            "size": 32,
+            "type": "unsigned_int"
+        },
+        {
+            "name": "ObjectSpeed",
+            "size": 32,
+            "type": "unsigned_int"
+        }
+    ]
+}

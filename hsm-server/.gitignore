@@ -1,0 +1,62 @@
+# build system files & directories
+/build/
+/CMakeFiles/
+/CMakeCache.txt
+/cmake_install.cmake
+/Makefile
+/keys/
+
+# gtest files
+/gtest/
+
+#clangd
+.cache
+.clang-format
+# VS Code files
+.vscode/
+.devcontainer/
+
+# binary files
+*.o
+*.a
+*.so
+*.exe
+*.dll
+
+# log files
+*.log
+
+# Vim swap files
+*.swp
+
+# Emacs backup files
+*~
+
+# other files of C++ projects
+*.obj
+*.pdb
+*.pch
+*.ilk
+*.lib
+*.exp
+*.idb
+*.ipch
+*.rsp
+*.tlog
+*.log
+*.vspscc
+*.vssscc
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# log files
+*.log
+
+# operating system files
+Thumbs.db
+Desktop.ini
+
+# linux operating system files
+*~

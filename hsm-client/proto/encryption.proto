@@ -1,0 +1,264 @@
+syntax = "proto3";
+package crypto;
+service CryptoService {
+    rpc bootSystem(BootSystemRequest) returns (Empty);
+    rpc addProccess(AddProcessRequest) returns (Empty);
+    rpc configure(ConfigureRequest) returns (Empty);
+    rpc generateAESKey(GenerateAESKeyRequest) returns (GenerateAESKeyResponse);
+    rpc generateRSAKeyPair(GenerateKeyPairRequest) returns (GenerateKeyPairResponse);
+    rpc generateECCKeyPair(GenerateKeyPairRequest) returns (GenerateKeyPairResponse);
+    rpc getSignedDataLength(GetHashLengthRequest) returns (GetLengthResponse);
+    rpc getECCencryptedLength(GetLengthRequest) returns (GetLengthResponse);
+    rpc getECCDecryptedLength(GetLengthRequest) returns (GetLengthResponse);
+    rpc getRSAencryptedLength(GetLengthRequest) returns (GetLengthResponse);
+    rpc getRSAdecryptedLength(GetLengthRequest) returns (GetLengthResponse);
+    rpc getAESencryptedLength(GetAESLengthRequest) returns (GetLengthResponse);
+    rpc getAESdecryptedLength(GetAESLengthRequest) returns (GetLengthResponse);
+    rpc getEncryptedLen(GetWholeLength) returns (GetLengthResponse);
+    rpc getDecryptedLen(GetWholeLength) returns (GetLengthResponse);
+    rpc sign(SignRequest) returns (SignResponse);
+    rpc verify(VerifyRequest) returns (VerifyResponse);
+    rpc getPublicECCKeyByUserId(KeyRequest) returns (KeyResponse);
+    rpc getPublicRSAKeyByUserId(KeyRequest) returns (KeyResponse);
+    rpc ECCencrypt(AsymetricEncryptRequest) returns (AsymetricEncryptResponse);
+    rpc ECCdecrypt(AsymetricDecryptRequest) returns (AsymetricDecryptResponse);
+    rpc RSAencrypt(AsymetricEncryptRequest) returns (AsymetricEncryptResponse);
+    rpc RSAdecrypt(AsymetricDecryptRequest) returns (AsymetricDecryptResponse);
+    rpc AESencrypt(AESEncryptRequest) returns (AESEncryptResponse);
+    rpc AESdecrypt(AESDecryptRequest) returns (AESDecryptResponse);
+    rpc encrypt(EncryptRequest) returns (EncryptResponse);
+    rpc decrypt(DecryptRequest) returns (DecryptResponse);
+    rpc signUpdate(SignRequest) returns (SignResponse);
+    rpc signFinalize(SignRequest) returns (SignResponse);
+    rpc verifyUpdate(VerifyRequest) returns (VerifyResponse);
+    rpc verifyFinalize(VerifyRequest) returns (VerifyResponse);
+}
+message AsymetricEncryptRequest{
+    int32 senderId = 1;
+    string keyId = 2;
+    bytes data = 3;
+    string messageId = 4;
+
+}
+message AsymetricEncryptResponse{
+    bytes encryptedData = 1;
+}
+message AsymetricDecryptRequest{
+    int32 senderId = 1;
+    int32 receiverId = 2;
+    string keyId = 3;
+    bytes data = 4;
+    string messageId = 5;
+
+}
+message GetHashLengthRequest{
+    int32 senderId = 1;
+    SHAAlgorithm func = 2;
+    int32 dataLen = 3;
+    string messageId = 4;
+
+}
+message GetAESLengthRequest{
+    int32 senderId = 1;
+   int32 dataLen = 2;
+   bool isFirst = 3;
+   AESChainingMode chainingMode = 4;
+    string messageId = 5;
+
+}
+message AsymetricDecryptResponse{
+    bytes decryptedData = 1;
+    int32 decryptedLength = 2;
+}
+message GetLengthRequest {
+   int32 senderId = 1;
+   int32 inLen = 2;
+   string messageId = 3;
+   
+}
+message GetLengthResponse {
+   int32 length = 1;
+}
+message GetWholeLength{
+    int32 senderId = 1;
+    int32 inLen = 2;
+    bool isFirst = 3;
+    string messageId = 4;
+    int32 userId = 5;
+
+
+}
+message GenerateAESKeyRequest {
+    int32 userId = 1;
+    repeated KeyPermission permissions = 2;
+    AESKeyLength keyLength = 3;
+    int32 destUserId = 4;
+    string messageId = 5;
+
+}
+message GenerateAESKeyResponse {
+    string aesKey = 1;
+}
+message GenerateKeyPairRequest {
+    int32 userId = 1;
+    repeated KeyPermission permissions = 2;
+    string messageId = 3;
+
+}
+message GenerateKeyPairResponse {
+    string publicKey = 1;
+    string privateKey = 2;
+}
+message SignRequest {
+    int32 senderId = 1;
+    bytes data = 2;
+    SHAAlgorithm hashFunc = 3;
+    int64 counter = 5;
+    string keyId = 6;
+    string messageId = 7;
+
+}
+message SignResponse {
+    bytes signature = 1;
+}
+message VerifyRequest {
+    int32 senderId = 1;
+    int32 receiverId = 2;
+    bytes data = 3;
+    bytes signature = 4;
+    SHAAlgorithm hashFunc = 5;
+    string keyId = 6;
+    int32 counter = 7;
+    string messageId = 8;
+
+}
+message VerifyResponse {
+    bool valid = 1;
+    bytes out = 2;
+}
+message KeyRequest {
+    int32 senderId = 1;
+    int32 userId = 2;
+    string messageId = 3;
+}
+message KeyResponse {
+    string key = 1;
+}
+message UserKeyPermissions {
+  int32 userId = 1;
+  repeated KeyPermission permissions = 2;
+}
+message BootSystemRequest {
+  repeated UserKeyPermissions usersIdsPermissions = 1;
+  string messageId = 5;
+
+}
+message Empty{
+}
+
+message CryptoConfig {
+  SHAAlgorithm hashFunction = 1;
+  AESKeyLength aesKeyLength = 2;
+  AESChainingMode aesChainingMode = 3;
+  AsymmetricFunction asymmetricFunction = 4;
+  string messageId = 5;
+}
+message ConfigureRequest {
+  int32 userId = 1;
+  CryptoConfig config = 2;
+  string messageId = 3;
+
+}
+message AddProcessRequest{
+    int32 userId = 1;
+    repeated KeyPermission permissions = 2;
+    string messageId = 4;
+}
+message EncryptRequest {
+    int32 senderId = 1;
+    int32 receiverId = 2;
+    bytes data = 3;
+    int64 counter = 4;
+    bool isFirst = 5;
+    string messageId = 6;
+}
+message EncryptResponse {
+    bytes encryptedData = 1;
+    bytes signature = 2;
+}
+message DecryptRequest {
+    int32 senderId = 1;
+    int32 receiverId = 2;
+    bytes encryptedData = 3;
+    int64 counter = 4;
+    bytes signature = 5;
+    bool isFirst = 6;
+    string messageId = 7;
+}
+message DecryptResponse {
+    bytes decryptedData = 1;
+    int32 decryptedLength = 2;
+}
+message AESEncryptRequest {
+    int32 senderId = 1;
+    int32 receiverId = 2;
+    bytes data = 3;
+    AsymmetricFunction func = 4;
+    int64 counter = 5;
+    string keyId = 6;
+    AESKeyLength keyLength = 7;
+    AESChainingMode chainingMode = 8;
+    bool isFirst = 9;
+    string messageId = 10;
+
+}
+message AESEncryptResponse {
+    bytes encryptedData = 1;
+}
+message AESDecryptRequest {
+    int32 senderId = 1;
+    int32 receiverId = 2;
+    bytes dataIn = 3;
+    int32 inLen=4;
+    bytes dataOut = 5;
+    AsymmetricFunction func = 6;
+    AESKeyLength keyLength = 7;
+    AESChainingMode chainingMode=8;
+    int64 counter = 9;
+    string keyId = 10;
+    bool isFirst = 11;
+    string messageId = 12;
+    int32 userId = 13;
+
+}
+message AESDecryptResponse {
+    bytes decrypteddata = 1;
+    int32 decryptedLength = 2;
+}
+enum KeyPermission {
+    VERIFY = 0;
+    SIGN = 1;
+    ENCRYPT = 2;
+    DECRYPT = 3;
+    EXPORTABLE = 4;
+}
+enum AESChainingMode {
+  ECB = 0; 
+  CBC = 1; 
+  CFB = 2; 
+  OFB = 3;
+  CTR = 4;
+}
+enum AsymmetricFunction {
+    RSA = 0;
+    ECC = 1;
+}
+enum SHAAlgorithm {
+    SHA256 = 0;
+    SHA3_512 = 1;
+}
+enum AESKeyLength {
+    AES_128 = 0;
+    AES_192 = 1;
+    AES_256 = 2;
+}

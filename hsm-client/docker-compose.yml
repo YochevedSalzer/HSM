@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  grpc_client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - GRPC_SERVER_HOST=grpc_server
+    volumes:
+      - .:/app
+    networks:
+      - grpc_network
+
+networks:
+  grpc_network:
+    external: true  # Use the external network created
